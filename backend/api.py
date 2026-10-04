@@ -17,9 +17,9 @@ from .scraper import BUSINESS_CATEGORIES, INDIAN_STATES, collect_businesses
 app = FastAPI(title="Local Business Lead Discovery API", version="1.0.0")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173","https://botbotbot-nine.vercel.app/"],
+    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173","https://botbotbot-nine.vercel.app"],
     allow_credentials=True,
-    allow_methods=["GET", "POST"],
+    allow_methods=["*"],
     allow_headers=["*"],
 )
 

@@ -15,7 +15,7 @@ import {
   TriangleAlert,
 } from 'lucide-react'
 
-const API_BASE = 'https://botbotbot-1c1p.onrender.com'
+const API_BASE = 'https://botbotbot-1-4h91.onrender.com'
 
 function App() {
   const [run, setRun] = useState(null)

@@ -15,7 +15,7 @@ import {
   TriangleAlert,
 } from 'lucide-react'
 
-const API_BASE = 'https://botbotbot-3.onrender.com'
+const API_BASE = 'https://botbotbot-1c1p.onrender.com'
 
 function App() {
   const [run, setRun] = useState(null)
@@ -139,7 +139,7 @@ function App() {
         </div>
 
         {error && <div className="error-banner"><TriangleAlert size={17} /><span>{error}</span></div>}
-        {done && run.errors?.length > 0 && <div className="notice-banner"><TriangleAlert size={17} /><span>{run.errors.length} search issue(s). Results shown are whatever the run could collect; details are available in the backend terminal.</span></div>}
+        {done && run.errors?.length > 0 && <div className="notice-banner"><TriangleAlert size={17} /><span>{run.errors.join(' ')}</span></div>}
 
         <section className="metrics" aria-label="Run summary">
           <div className="metric"><div className="metric-top"><span>BUSINESSES FOUND</span><Store size={15} /></div><strong>{done ? leads.length : '—'}</strong><small>{done ? 'Businesses across selected searches' : 'Results appear after discovery'}</small></div>

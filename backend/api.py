@@ -17,7 +17,7 @@ from .scraper import BUSINESS_CATEGORIES, INDIAN_STATES, collect_businesses
 app = FastAPI(title="Local Business Lead Discovery API", version="1.0.0")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173","https://botbotbot-nine.vercel.app/"],
+    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173", "https://botbotbot-nine.vercel.app"],
     allow_credentials=True,
     allow_methods=["GET", "POST"],
     allow_headers=["*"],
@@ -106,7 +106,7 @@ def _run_discovery(run_id: str, total_businesses: int) -> None:
         query = f"{category} in {state}"
         _update_run(run_id, current_query=query, progress=index - 1)
         try:
-            collect_businesses(
+            found = collect_businesses(
                 category,
                 city=state,
                 max_results=2,
@@ -114,6 +114,8 @@ def _run_discovery(run_id: str, total_businesses: int) -> None:
                     run_id, lead, selected_state, total_businesses
                 ),
             )
+            if not found:
+                errors.append(f"{query}: Google Maps loaded no detectable business cards for this search.")
         except Exception as exc:
             errors.append(f"{query}: {type(exc).__name__}: {exc}")
         _update_run(run_id, progress=index)

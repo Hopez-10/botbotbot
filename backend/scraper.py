@@ -2,6 +2,7 @@ import os
 import random
 import re
 from typing import Callable, List, Dict, Any
+from urllib.parse import quote_plus
 
 from playwright.sync_api import sync_playwright
 
@@ -133,23 +134,12 @@ def collect_businesses(
     query = f"{category} {city}".strip()
 
     with sync_playwright() as p:
-        headless_setting = os.getenv("PLAYWRIGHT_HEADLESS", "false").lower() == "true"
+        headless_setting = os.getenv("PLAYWRIGHT_HEADLESS", "true").lower() == "true"
         browser = p.chromium.launch(headless=headless_setting)
         page = browser.new_page(viewport={"width": 1440, "height": 1200})
         print(f"Opening Google Maps for: {query} | headless={headless_setting}")
-        page.goto("https://www.google.com/maps", wait_until="domcontentloaded")
-
-        try:
-            search_box = page.locator('#ucc-1').first
-            search_box.wait_for(state="visible", timeout=15000)
-            if search_box.count():
-                print("Search box found using id='ucc-1'. Entering query...")
-                search_box.fill(query)
-                page.keyboard.press("Enter")
-            else:
-                print("Search box with id='ucc-1' not found. Google Maps may be blocking automation or the DOM changed.")
-        except Exception as exc:
-            print(f"Search selector error: {exc}")
+        search_url = f"https://www.google.com/maps/search/{quote_plus(query)}"
+        page.goto(search_url, wait_until="domcontentloaded")
 
         cards_locator = page.locator('div[role="article"]')
         try:
